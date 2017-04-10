@@ -1,2 +1,2 @@
 # Test
-This is a test project!
+This is a project for similarity measure of categorical data!
