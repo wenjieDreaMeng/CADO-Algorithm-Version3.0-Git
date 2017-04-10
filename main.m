@@ -9,8 +9,8 @@ global weight;
 global ps;
 global pf;
 
-Data = csvread('E:\Matlab_Projects\测试数据集\分类型数据集\Soybean-small Data Set.csv');         %   载入总的数据集
-TheoryCluster = 4;
+Data = csvread('E:\Matlab_Projects\测试数据集\分类型数据集\Zoo Data Set.csv');         %   载入总的数据集
+TheoryCluster = 7;
 Times = 20;                  %   迭代次数
 fid = fopen('Result.txt', 'w');
 
