@@ -6,9 +6,7 @@ function DistanceMatrix = CADOImprove( Data ,alpha )
 %   输入参数：分类型数据集Data
 %   输出参数：距离矩阵
 
-% global fid;
 global TotalWeight;
-% fid = fopen('CountProcess', 'w');
 
 [row,col] = size(Data);
 
@@ -20,7 +18,6 @@ for i = 1:row
             IaASV = IaASV(Data,i,j,attribute_index);
             IeASV = IeASV(Data,i,j,attribute_index);
             CASV = alpha * IaASV + (1 - alpha) * IeASV;
-            %             fprintf('i:%d  j:%d  col:%d  IaASV:%5.6f  IeASV:%5.6f  CASV:%5.6f\n', i,j,attribute_index,IaASV,IeASV,CASV);
             CADO = CADO + CASV;
         end
         CADO = CADO / TotalWeight;
@@ -85,15 +82,11 @@ for j = 1:col
         if ~isempty(inter_set)
             for k = 1:size(inter_set,1)
                 Object_i_ICP = size(find(Data(i_row,j)==inter_set(k)),1)/size(i_row,1);
-                %                 fprintf(fid,'k:%d Object_i_ICP:%6.6f\n', k,Object_i_ICP);
                 Object_j_ICP = size(find(Data(j_row,j)==inter_set(k)),1)/size(j_row,1);
-                %                 fprintf(fid,'k:%d Object_j_ICP:%6.6f\n', k,Object_j_ICP);
                 IRSI = IRSI + min(Object_i_ICP,Object_j_ICP);
             end
         end
         InterCoupledSimilarityValue = InterCoupledSimilarityValue + weight(j,attribute)*IRSI;     %   相互耦合相似性
-        %         InterCoupledSimilarityValue = InterCoupledSimilarityValue + (1/(col-1))*IRSI;     %   相互耦合相似性
-        %         fprintf(fid,'Object_i:%d Object_j:%d Attribute:%d weight:%6.6f mean:%6.15f IRSI:%6.6f Simila:%6.20f\n', Object_i,Object_j,attribute,weight(j,attribute),1/(col-1),IRSI,InterCoupledSimilarityValue);
     end
 end
 InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性

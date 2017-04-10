@@ -15,7 +15,6 @@ for i = 1:row
             IaASV = IaASV(Data,i,j,attribute_index);
             IeASV = IeASV(Data,i,j,attribute_index);
             CASV = IaASV * IeASV;
-            %             fprintf('i:%d  j:%d  col:%d  IaASV:%5.6f  IeASV:%5.6f  CASV:%5.6f\n', i,j,attribute_index,IaASV,IeASV,CASV);
             CADO = CADO + CASV;
         end
         DistanceMatrix(i,j) = CADO;
