@@ -8,38 +8,39 @@ global weight;
 global ps;
 global pf;
 
-Data = csvread('E:\Matlab_Projects\测试数据集\分类型数据集\Shuttle Landing Control Data Set.csv');         %   载入总的数据集
+FileName = 'Shuttle Landing Control Data Set';
+
+Data = csvread(strcat(strcat('E:\Matlab_Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
 TheoryCluster = 2;
 Times = 20;                  %   迭代次数
-fid = fopen('Result.txt', 'w');
-
+fid = fopen(strcat(FileName,'.txt'), 'w');
 
 weight = WeightBetweenAttribute(Data);
 [row,col] = size(Data);
 [ps,pf] = WeightInAttribute(Data(:,[1:col-1]));
 
+CADO_SC_AC = 0;
+CADO_KMode_AC = 0;
+CADO_SC_NMI = 0;
+CADO_KMode_NMI = 0;
+CADO_SC_ARI = 0;
+CADO_KMode_ARI = 0;
+
+OF_SC_AC = 0;
+OF_KMode_AC = 0;
+OF_SC_NMI = 0;
+OF_KMode_NMI = 0;
+OF_SC_ARI = 0;
+OF_KMode_ARI = 0;
+
+NDM_ForCD_SC_AC = 0;
+NDM_ForCD_KMode_AC = 0;
+NDM_ForCD_SC_NMI = 0;
+NDM_ForCD_KMode_NMI = 0;
+NDM_ForCD_SC_ARI = 0;
+NDM_ForCD_KMode_ARI = 0;
+
 for i = 1:Times
-    CADO_SC_AC = 0;
-    CADO_KMode_AC = 0;
-    CADO_SC_NMI = 0;
-    CADO_KMode_NMI = 0;
-    CADO_SC_ARI = 0;
-    CADO_KMode_ARI = 0;
-    
-    OF_SC_AC = 0;
-    OF_KMode_AC = 0;
-    OF_SC_NMI = 0;
-    OF_KMode_NMI = 0;
-    OF_SC_ARI = 0;
-    OF_KMode_ARI = 0;
-    
-    NDM_ForCD_SC_AC = 0;
-    NDM_ForCD_KMode_AC = 0;
-    NDM_ForCD_SC_NMI = 0;
-    NDM_ForCD_KMode_NMI = 0;
-    NDM_ForCD_SC_ARI = 0;
-    NDM_ForCD_KMode_ARI = 0;
-    
     %    除去最后一列类标签,使用相似度求样本间的距离
     Dist = CADO(Data(:,[1:col-1]));
     %   采用Normalized谱聚类算法进行聚类，计算正确率
@@ -104,8 +105,8 @@ fprintf(fid,'CADO SC_Average_AC =     %8.4f,        NDM_ForCD SC_Average_AC = %8
 fprintf(fid,'CADO KMode_Average_AC =  %8.4f,     NDM_ForCD KMode_Average_AC = %8.4f      OF KMode_Average_AC = %8.4f\n',CADO_KMode_AC/Times,NDM_ForCD_KMode_AC/Times,OF_KMode_AC/Times);
 fprintf(fid,'CADO SC_Average_NMI =    %8.4f,       NDM_ForCD SC_Average_NMI = %8.4f        OF SC_Average_NMI = %8.4f\n',CADO_SC_NMI/Times,NDM_ForCD_SC_NMI/Times,OF_SC_NMI/Times);
 fprintf(fid,'CADO KMode_Average_NMI = %8.4f,    NDM_ForCD KMode_Average_NMI = %8.4f     OF KMode_Average_NMI = %8.4f\n',CADO_KMode_NMI/Times,NDM_ForCD_KMode_NMI/Times,OF_KMode_NMI/Times);
-fprintf(fid,'CADO SC_Average_RI =     %8.4f,        NDM_ForCD SC_Average_RI = %8.4f         OF SC_Average_RI = %8.4f\n',CADO_SC_ARI/Times,NDM_ForCD_SC_ARI/Times,OF_SC_ARI/Times);
-fprintf(fid,'CADO KMode_Average_RI =  %8.4f,     NDM_ForCD KMode_Average_RI = %8.4f      OF KMode_Average_RI = %8.4f\n',CADO_KMode_ARI/Times,NDM_ForCD_KMode_ARI/Times,OF_KMode_ARI/Times);
+fprintf(fid,'CADO SC_Average_ARI =    %8.4f,       NDM_ForCD SC_Average_ARI = %8.4f        OF SC_Average_ARI = %8.4f\n',CADO_SC_ARI/Times,NDM_ForCD_SC_ARI/Times,OF_SC_ARI/Times);
+fprintf(fid,'CADO KMode_Average_ARI = %8.4f,    NDM_ForCD KMode_Average_ARI = %8.4f     OF KMode_Average_ARI = %8.4f\n',CADO_KMode_ARI/Times,NDM_ForCD_KMode_ARI/Times,OF_KMode_ARI/Times);
 
 for alpha = 0.1:0.1:0.9
     fprintf(fid,'alpha = %3.1f\n', alpha);
