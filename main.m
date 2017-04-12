@@ -8,12 +8,12 @@ global weight;
 global ps;
 global pf;
 
-FileName = 'Shuttle Landing Control Data Set';
-
-Data = csvread(strcat(strcat('E:\Matlab_Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
+FileName = 'Hayes-Roth Data Set';
 TheoryCluster = 2;
+
+Data = csvread(strcat(strcat('G:\5、Matlab Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
 Times = 20;                  %   迭代次数
-fid = fopen(strcat(FileName,'.txt'), 'w');
+fid = fopen(strcat('G:\5、Matlab Projects\CADO算法改进 Version3.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
 
 weight = WeightBetweenAttribute(Data);
 [row,col] = size(Data);
