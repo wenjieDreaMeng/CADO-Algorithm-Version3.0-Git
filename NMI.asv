@@ -1,0 +1,17 @@
+function v = NMI(label, result)
+
+%   Function:   该函数求出两列间的互信息，并标准化
+%   Input:      类标签，聚类结果
+%   Output:     NMI值
+
+assert(length(label) == length(result));
+row = length(label);
+
+if length(unique(label)) ~= length(unique(result))
+    v = 0;
+else
+    
+end
+
+
+end
