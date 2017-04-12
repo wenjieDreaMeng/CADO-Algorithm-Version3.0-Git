@@ -19,8 +19,6 @@ InitialCenters = InitialCenters(1:K);
 ClusterCenters_i = Data(InitialCenters,[1:d-1]);
 
 global weight;
-% global fid;
-% fid = fopen('CountProcess', 'w');
 
 while 1 == 1
     %计算每个数据到聚类中心的距离
@@ -120,13 +118,13 @@ b = size(find(Data(:,attribute) == Data(Object_j,attribute)),1);
 if Data(Object_i,attribute) ==  Data(Object_j,attribute)
     weight = ps(attribute);
     IntraCoupledSimilarityValue = 1;
-    IntraCoupledSimilarityValue = IntraCoupledSimilarityValue * weight;
     IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
+    IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 else
     weight = pf(attribute);
     IntraCoupledSimilarityValue = 1/(1 + log2(row^2/a) + log2(row^2/b));
-    IntraCoupledSimilarityValue = IntraCoupledSimilarityValue * weight;
     IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
+    IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 end
 
 TotalWeight = TotalWeight + weight;
@@ -163,8 +161,6 @@ for j = 1:col
             end
         end
         InterCoupledSimilarityValue = InterCoupledSimilarityValue + weight(j,attribute)*IRSI;     %   相互耦合相似性
-%         InterCoupledSimilarityValue = InterCoupledSimilarityValue + 1/(col-1)*IRSI;     %   相互耦合相似性
-%         fprintf(fid,'Object_i:%d Object_j:%d Attribute:%d weight:%6.2f mean:%6.2f Simila:%6.2f\n', Object_i,Object_j,attribute,weight(j,attribute),1/(col-1),InterCoupledSimilarityValue);
     end
 end
 InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性

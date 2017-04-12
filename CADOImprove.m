@@ -1,4 +1,4 @@
-function DistanceMatrix = CADOImprove( Data ,alpha )
+function [ DistanceMatrix ] = CADOImprove( Data ,alpha )
 
 %   Author: wenjie
 %   Data:   2017-1-15
@@ -46,13 +46,13 @@ b = size(find(Data(:,attribute) == Data(Object_j,attribute)),1);
 if Data(Object_i,attribute) ==  Data(Object_j,attribute)
     weight = ps(attribute);
     IntraCoupledSimilarityValue = 1;
-    IntraCoupledSimilarityValue = IntraCoupledSimilarityValue * weight;
     IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
+    IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 else
     weight = pf(attribute);
     IntraCoupledSimilarityValue = 1/(1 + log2(row^2/a) + log2(row^2/b));
-    IntraCoupledSimilarityValue = IntraCoupledSimilarityValue * weight;
     IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
+    IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 end
 TotalWeight = TotalWeight + weight;
 end

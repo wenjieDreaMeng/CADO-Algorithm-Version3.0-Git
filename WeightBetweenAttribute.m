@@ -1,4 +1,4 @@
-function [ R ] = WeightBetweenAttribute(Data,ColSumPercent)
+function [ R ] = WeightBetweenAttribute(Data)
 
 %   Function:   该函数求出两列间的互信息，并标准化
 %   Input:      数据集Data
@@ -15,10 +15,11 @@ for i = 1:col
         
         for Element_i_index = 1:size(Element_i,1)
             for Element_j_index = 1:size(Element_j,1)
+                F_i = find(Data(:,i) == Element_i(Element_i_index));
+                F_j = find(Data(:,j) == Element_j(Element_j_index));
                 P_i = size(find(Data(:,i) == Element_i(Element_i_index)),1)/row;     %   计算出在对应列上值等于Element_i(Element_i_index)的元素的个数
                 P_j = size(find(Data(:,j) == Element_j(Element_j_index)),1)/row;     %   计算出在对应列上值等于Element_i(Element_i_index)的元素的个数
-                [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Element_i(Element_i_index)));     %  找出第i列为Element_i(Element_i_index)的元素
-                Temp_i_j = find(Data(i_row,j) == Element_j(Element_j_index));                          %  在Temp_i的基础上找出值为Element_j(Element_j_index)的元素
+                Temp_i_j = intersect(F_i,F_j);                                       %  在Temp_i的基础上找出值为Element_j(Element_j_index)的元素
                 P_i_j = size(Temp_i_j,1)/row;
                 if P_i_j == 0           %   没有交集时，互信息为零
                     I = I;
