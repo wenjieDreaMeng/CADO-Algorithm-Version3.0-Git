@@ -5,6 +5,9 @@ function v = NMI(label, result)
 %   Output:     NMIֵ
 
 assert(length(label) == length(result));
+label = label(:);
+result = result(:);
+
 row = length(label);
 
 if length(unique(label)) ~= length(unique(result))

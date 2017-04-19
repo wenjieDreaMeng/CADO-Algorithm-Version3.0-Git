@@ -12,20 +12,20 @@ categoryid = zeros(1,n);
 % InitialCenters为随机产生的起始中心
 InitialCenters = randperm(n);
 InitialCenters = InitialCenters(1:K);
-% Make this different to get the loop started.
+%   Make this different to get the loop started.
 ClusterCenters_i = Data(InitialCenters,[1:d-1]);
 
 while 1 == 1
-    %计算每个数据到聚类中心的距离
+    %   计算每个数据到聚类中心的距离
     for i = 1:n
-        Dist = Distance_of_Categorical(Data(:,[1:d-1]),i,InitialCenters);% 调用两个对象之间的距离函数
-        [m,ind] = min(Dist(:,2));                   % 将当前聚类结果存入categoryid中
+        Dist = Distance_of_Categorical(Data(:,[1:d-1]),i,InitialCenters);   %  调用两个对象之间的距离函数
+        [m,ind] = min(Dist(:,2));                                           %   将当前聚类结果存入categoryid中
         categoryid(i) = ind;
     end
     
     ClusterCenters_j = ClusterCenters_i;
     for i = 1:K
-        %   找到每一类的所有数据，计算他们的Mode，作为下次计算的聚类中心 K-mode算法
+        %   找到每一类的所有数据，计算他们的Mode，作为下次计算的聚类中心K-mode算法
         ind = find(categoryid == i);
         if ~isempty(ind)
             ClusterCenters_i(i,:) = Find_Mode(Data(ind,[1:d-1]));
@@ -76,7 +76,7 @@ for k = 1:n
                 P_j_No = (size(Temp_i_j,1) - 1)/(row - 1);
                 d = d + weight(i,j) * (P_i * P_i_No + P_j * P_j_No);
             end
-            wr = ps(i);
+            wr = pf(i);
         else
             for j = 1 : col
                 [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Data(Object_i,i)));      %  找出第i列为Data(Xi,i)的元素
@@ -90,7 +90,7 @@ for k = 1:n
                 P_j_No = (size(Temp_i_j,1) - 1)/(row - 1);
                 d = d + weight(i,j) * delta(Data(Object_i,j),Data(InitialCenters(k),j)) * (P_i * P_i_No + P_j * P_j_No);
             end
-            wr = pf(i);
+            wr = ps(i);
         end
         w = w + wr;
         Dist = Dist + wr*d;
@@ -111,9 +111,9 @@ function [Mode] = Find_Mode(Data)
 [row,column] = size(Data);
 Mode = [];
 for i=1:column
-    ColumnValue = unique(Data(:,i));      % 得到每一列中不同的属性值
-    [Colrow, ColCol] = size(ColumnValue) ;% 得到当前属性值得维数
-    ColumnValueSum = 0;
+    ColumnValue = unique(Data(:,i));        % 得到每一列中不同的属性值
+    [Colrow, ColCol] = size(ColumnValue) ;  % 得到当前属性值得维数
+    ColumnValueSum = 0;                     % 表示第j个属性值在第i列出现的次数
     dataset = [];
     for j = 1:Colrow
         [Rowresult,Colresult] = size(find(Data(:,i)==ColumnValue(j,1)));

@@ -8,15 +8,15 @@ global weight;
 global ps;
 global pf;
 
-FileName = 'Soybean-small Data Set';
-TheoryCluster = 4;
+FileName = 'Shuttle Landing Control Data Set';
+TheoryCluster = 2;
 
 Data = csvread(strcat(strcat('E:\Matlab_Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
-Times = 20;                  %   迭代次数
+Times = 10;                  %   迭代次数
 fid = fopen(strcat('E:\Matlab_Projects\CADO算法改进 Version3.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
 
-weight = WeightBetweenAttribute(Data);
 [row,col] = size(Data);
+weight = WeightBetweenAttribute(Data(:,[1:col-1]));
 [ps,pf] = WeightInAttribute(Data(:,[1:col-1]));
 
 CADO_SC_AC = 0;

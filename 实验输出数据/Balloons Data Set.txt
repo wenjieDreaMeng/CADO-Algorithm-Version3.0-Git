@@ -1,0 +1,42 @@
+CADO SC_Average_AC =       0.9400,        NDM_ForCD SC_Average_AC =   0.6000         OF SC_Average_AC =   0.7000
+CADO KMode_Average_AC =    0.7200,     NDM_ForCD KMode_Average_AC =   0.6600      OF KMode_Average_AC =   0.7175
+CADO SC_Average_NMI =      0.8803,       NDM_ForCD SC_Average_NMI =   0.0000        OF SC_Average_NMI =   0.4015
+CADO KMode_Average_NMI =   0.3134,    NDM_ForCD KMode_Average_NMI =   0.1245     OF KMode_Average_NMI =   0.2769
+CADO SC_Average_ARI =      0.8489,       NDM_ForCD SC_Average_ARI =  -0.0532        OF SC_Average_ARI =   0.2447
+CADO KMode_Average_ARI =   0.2291,    NDM_ForCD KMode_Average_ARI =   0.0633     OF KMode_Average_ARI =   0.1914
+alpha = 0.1
+CADOImprove SC_AC =    0.9800,  CADOImprove KMode_AC =    0.7300
+CADOImprove SC_NMI =   0.9601,  CADOImprove KMode_NMI =   0.2759
+CADOImprove SC_ARI =   0.9496,  CADOImprove KMode_ARI =   0.1941
+alpha = 0.2
+CADOImprove SC_AC =    0.9800,  CADOImprove KMode_AC =    0.7025
+CADOImprove SC_NMI =   0.9601,  CADOImprove KMode_NMI =   0.2204
+CADOImprove SC_ARI =   0.9496,  CADOImprove KMode_ARI =   0.1426
+alpha = 0.3
+CADOImprove SC_AC =    0.9400,  CADOImprove KMode_AC =    0.7025
+CADOImprove SC_NMI =   0.8803,  CADOImprove KMode_NMI =   0.2420
+CADOImprove SC_ARI =   0.8489,  CADOImprove KMode_ARI =   0.1639
+alpha = 0.4
+CADOImprove SC_AC =    0.9400,  CADOImprove KMode_AC =    0.6775
+CADOImprove SC_NMI =   0.8803,  CADOImprove KMode_NMI =   0.1708
+CADOImprove SC_ARI =   0.8489,  CADOImprove KMode_ARI =   0.1053
+alpha = 0.5
+CADOImprove SC_AC =    0.9800,  CADOImprove KMode_AC =    0.6900
+CADOImprove SC_NMI =   0.9601,  CADOImprove KMode_NMI =   0.1915
+CADOImprove SC_ARI =   0.9496,  CADOImprove KMode_ARI =   0.1256
+alpha = 0.6
+CADOImprove SC_AC =    0.9600,  CADOImprove KMode_AC =    0.6575
+CADOImprove SC_NMI =   0.9202,  CADOImprove KMode_NMI =   0.1169
+CADOImprove SC_ARI =   0.8993,  CADOImprove KMode_ARI =   0.0589
+alpha = 0.7
+CADOImprove SC_AC =    0.9400,  CADOImprove KMode_AC =    0.6525
+CADOImprove SC_NMI =   0.8803,  CADOImprove KMode_NMI =   0.1017
+CADOImprove SC_ARI =   0.8489,  CADOImprove KMode_ARI =   0.0511
+alpha = 0.8
+CADOImprove SC_AC =    0.9600,  CADOImprove KMode_AC =    0.6525
+CADOImprove SC_NMI =   0.9202,  CADOImprove KMode_NMI =   0.1070
+CADOImprove SC_ARI =   0.8993,  CADOImprove KMode_ARI =   0.0491
+alpha = 0.9
+CADOImprove SC_AC =    0.9400,  CADOImprove KMode_AC =    0.7025
+CADOImprove SC_NMI =   0.8803,  CADOImprove KMode_NMI =   0.2139
+CADOImprove SC_ARI =   0.8489,  CADOImprove KMode_ARI =   0.1534

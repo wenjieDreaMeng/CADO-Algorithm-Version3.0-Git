@@ -56,19 +56,19 @@ function [dataset]=Distance_of_Categorical(Data,Object_i,InitialCenters)
 dataset = [];
 
 for j = 1:n
-    TotalSimilarity = 0;
+    TotaldisSimilarity = 0;
     for attribute_index = 1:column
         a = size(find(Data(:,attribute_index) == Data(Object_i,attribute_index)),1);
         b = size(find(Data(:,attribute_index) == Data(InitialCenters(j),attribute_index)),1);
         %   相同值时相似度为1,不同值为 1/(1 + log2(row^2/a) + log2(row^2/b));
         if Data(Object_i,attribute_index) ==  Data(InitialCenters(j),attribute_index)
-            similarity = 1;
+            disSimilarity = 0;
         else
-            similarity = 1/(1 + log2(row^2/a) + log2(row^2/b));
+            disSimilarity = 1 - 1/[1 + log2(row/a)*log2(row/b)];
         end
-        TotalSimilarity = TotalSimilarity + similarity;
+        TotaldisSimilarity = TotaldisSimilarity + disSimilarity;
     end
-    dataset = cat(1,dataset, [j,TotalSimilarity]);
+    dataset = cat(1,dataset, [j,TotaldisSimilarity]);
 end
 end
 

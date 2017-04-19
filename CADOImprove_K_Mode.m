@@ -122,7 +122,7 @@ if Data(Object_i,attribute) ==  Data(Object_j,attribute)
     IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 else
     weight = pf(attribute);
-    IntraCoupledSimilarityValue = 1/(1 + log2(row^2/a) + log2(row^2/b));
+    IntraCoupledSimilarityValue = 1/(1 + log2(row^2/a) * log2(row^2/b));
     IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   ≤ªœ‡À∆–‘
     IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 end

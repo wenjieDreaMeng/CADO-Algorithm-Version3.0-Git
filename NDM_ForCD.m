@@ -7,6 +7,7 @@ function [ Dist ] = NDM_ForCD( Data )
 %   Output:     样本间的距离矩阵
 
 [row,col] = size(Data);
+
 for i = 1:row
     for j = 1:row
         Dist(i,j) = DistCompute(Data,i,j);
@@ -46,35 +47,37 @@ dist = 0;
 w = 0;
 d = 0;
 
-for i = 1:col
-    if Data(Xi,i) ~= Data(Xj,i)
-        for j = 1 : col
-            [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Data(Xi,i)));      %  找出第i列为Data(Xi,i)的元素
-            Temp_i_j = find(Data(i_row,j) == Data(Xi,j));                           %  找出同时第j列为Data(Xi,j)的元素
-            P_i = size(Temp_i_j,1)/row;
-            P_i_No = (size(Temp_i_j,1) - 1)/(row - 1);
-            
-            [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Data(Xj,i)));      %  找出第i列为Data(Xi,i)的元素
-            Temp_i_j = find(Data(i_row,j) == Data(Xj,j));                           %  找出同时第j列为Data(Xi,j)的元素
-            P_j = size(Temp_i_j,1)/row;
-            P_j_No = (size(Temp_i_j,1) - 1)/(row - 1);
-            d = d + weight(i,j) * (P_i * P_i_No + P_j * P_j_No);
+for r = 1:col
+    if Data(Xi,r) ~= Data(Xj,r)
+        for l = 1 : col
+            F_i_r = find(Data(:,r) == Data(Xi,r));
+            F_i_l = find(Data(:,l) == Data(Xi,l));
+            Temp_i = intersect(F_i_r,F_i_l);
+            P_i = size(Temp_i,1)/row;
+            P_i_No = (size(Temp_i,1) - 1)/(row - 1);
+            F_j_r = find(Data(:,r) == Data(Xj,r));
+            F_j_l = find(Data(:,l) == Data(Xj,l));
+            Temp_j = intersect(F_j_r,F_j_l);
+            P_j = size(Temp_j,1)/row;
+            P_j_No = (size(Temp_j,1) - 1)/(row - 1);
+            d = d + weight(r,l) * (P_i * P_i_No + P_j * P_j_No);
         end
-        wr = ps(i);
+        wr = pf(r);
     else
-        for j = 1 : col
-            [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Data(Xi,i)));      %  找出第i列为Data(Xi,i)的元素
-            Temp_i_j = find(Data(i_row,j) == Data(Xi,j));                           %  找出同时第j列为Data(Xi,j)的元素
-            P_i = size(Temp_i_j,1)/row;
-            P_i_No = (size(Temp_i_j,1) - 1)/(row - 1);
-            
-            [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Data(Xj,i)));      %  找出第i列为Data(Xi,i)的元素
-            Temp_i_j = find(Data(i_row,j) == Data(Xj,j));                           %  找出同时第j列为Data(Xi,j)的元素
-            P_j = size(Temp_i_j,1)/row;
-            P_j_No = (size(Temp_i_j,1) - 1)/(row - 1);
-            d = d + weight(i,j) * delta(Data(Xi,j),Data(Xj,j)) * (P_i * P_i_No + P_j * P_j_No);
+        for l = 1 : col
+            F_i_r = find(Data(:,r) == Data(Xi,r));
+            F_i_l = find(Data(:,l) == Data(Xi,l));
+            Temp_i = intersect(F_i_r,F_i_l);
+            P_i = size(Temp_i,1)/row;
+            P_i_No = (size(Temp_i,1) - 1)/(row - 1);
+            F_j_r = find(Data(:,r) == Data(Xj,r));
+            F_j_l = find(Data(:,l) == Data(Xj,l));
+            Temp_j = intersect(F_j_r,F_j_l);
+            P_j = size(Temp_j,1)/row;
+            P_j_No = (size(Temp_j,1) - 1)/(row - 1);
+            d = d + weight(r,l) * delta(Data(Xi,l),Data(Xj,l)) * (P_i * P_i_No + P_j * P_j_No);
         end
-        wr = pf(i);
+        wr = ps(r);
     end
     w = w + wr;
     dist = dist + wr*d;

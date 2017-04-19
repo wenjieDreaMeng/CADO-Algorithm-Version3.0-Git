@@ -7,7 +7,7 @@ function [ R ] = WeightBetweenAttribute(Data)
 [row,col] = size(Data);
 
 for i = 1:col
-    for j = 1:col
+    for j = i:col
         I = 0;                              %   Mutual Information
         H = 0;                              %   The joint entropy
         Element_i = unique(Data(:,i));      %   取出某一列的元素出现的集合
@@ -17,8 +17,8 @@ for i = 1:col
             for Element_j_index = 1:size(Element_j,1)
                 F_i = find(Data(:,i) == Element_i(Element_i_index));
                 F_j = find(Data(:,j) == Element_j(Element_j_index));
-                P_i = size(find(Data(:,i) == Element_i(Element_i_index)),1)/row;     %   计算出在对应列上值等于Element_i(Element_i_index)的元素的个数
-                P_j = size(find(Data(:,j) == Element_j(Element_j_index)),1)/row;     %   计算出在对应列上值等于Element_i(Element_i_index)的元素的个数
+                P_i = size(F_i,1)/row;     %   计算出在对应列上值等于Element_i(Element_i_index)的元素的个数
+                P_j = size(F_j,1)/row;     %   计算出在对应列上值等于Element_i(Element_i_index)的元素的个数
                 Temp_i_j = intersect(F_i,F_j);                                       %  在Temp_i的基础上找出值为Element_j(Element_j_index)的元素
                 P_i_j = size(Temp_i_j,1)/row;
                 if P_i_j == 0           %   没有交集时，互信息为零
@@ -31,7 +31,13 @@ for i = 1:col
             end
         end
         H = -H;
-        R(i,j) = I / H;
+        if H == 0
+            R(i,j) = 1;
+            R(j,i) = 1;
+        else
+            R(i,j) = I / H;
+            R(j,i) = I / H;
+        end
     end
 end
 
