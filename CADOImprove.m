@@ -32,7 +32,7 @@ function IntraCoupledDissimilarityValue = IaASV(Data,Object_i,Object_j,attribute
 %   Author: wenjie
 %   Data:   2017-1-15
 %   功能：计算分类型数据集Data中两个对象Object_i,Object_j在属性attribute上的内耦合系数
-%   输入参数：数据集Data,对象编号Object_i,对象编号Object_j,属性列attribute 
+%   输入参数：数据集Data,对象编号Object_i,对象编号Object_j,属性列attribute
 %   输出参数：两个对象Object_i和Object_j在属性列attribute的内耦合系数
 
 global TotalWeight;
@@ -45,12 +45,14 @@ b = size(find(Data(:,attribute) == Data(Object_j,attribute)),1);
 if Data(Object_i,attribute) ==  Data(Object_j,attribute)
     weight = ps(attribute);
     IntraCoupledSimilarityValue = 1;
-    IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
+    %     IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
+    IntraCoupledDissimilarityValue = 1 - IntraCoupledSimilarityValue;
     IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 else
     weight = pf(attribute);
     IntraCoupledSimilarityValue = 1/(1 + log2(row^2/a) * log2(row^2/b));
-    IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
+    %     IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
+    IntraCoupledDissimilarityValue = 1 - IntraCoupledSimilarityValue;
     IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 end
 TotalWeight = TotalWeight + weight;

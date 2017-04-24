@@ -18,7 +18,7 @@ for i = 1:row;
             if Data(i,attribute_index) ==  Data(j,attribute_index)
                 disSimilarity = 0;
             else
-                disSimilarity = 1 - 1/[1 + log2(row/a)*log2(row/b)];
+                disSimilarity = 1 - 1/[1 + log2(row^2/a)*log2(row^2/b)];
             end
             TotalDisSimilarity = TotalDisSimilarity + disSimilarity;
         end

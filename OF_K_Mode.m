@@ -64,7 +64,7 @@ for j = 1:n
         if Data(Object_i,attribute_index) ==  Data(InitialCenters(j),attribute_index)
             disSimilarity = 0;
         else
-            disSimilarity = 1 - 1/[1 + log2(row/a)*log2(row/b)];
+            disSimilarity = 1 - 1/[1 + log2(row^2/a)*log2(row^2/b)];
         end
         TotaldisSimilarity = TotaldisSimilarity + disSimilarity;
     end

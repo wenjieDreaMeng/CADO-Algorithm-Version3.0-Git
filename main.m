@@ -8,11 +8,11 @@ global weight;
 global ps;
 global pf;
 
-FileName = 'Shuttle Landing Control Data Set';
+FileName = 'Balloons Data Set';
 TheoryCluster = 2;
 
 Data = csvread(strcat(strcat('E:\Matlab_Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
-Times = 10;                  %   迭代次数
+Times = 20;                  %   迭代次数
 fid = fopen(strcat('E:\Matlab_Projects\CADO算法改进 Version3.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
 
 [row,col] = size(Data);
@@ -43,6 +43,8 @@ NDM_ForCD_KMode_ARI = 0;
 for i = 1:Times
     %    除去最后一列类标签,使用相似度求样本间的距离
     Dist = CADO(Data(:,[1:col-1]));
+    maxCADO = max(max(Dist))
+    minCADO = min(min(Dist))
     %   采用Normalized谱聚类算法进行聚类，计算正确率
     categoryid = NormalizedSC(Dist,TheoryCluster);
     [CADO_NormalizedSC_AC,CADO_NormalizedSC_PR,CADO_NormalizedSC_RE,CADO_NormalizedSC_CV] = AC_PR_RE(categoryid,Data(:,col));
@@ -63,6 +65,8 @@ for i = 1:Times
     
     %    除去最后一列类标签,使用相似度求样本间的距离
     Dist = OF(Data(:,[1:col-1]));
+    maxOF = max(max(Dist))
+    minOF = min(min(Dist))
     %   采用Normalized谱聚类算法进行聚类，计算正确率
     categoryid = NormalizedSC(Dist,TheoryCluster);
     [OF_NormalizedSC_AC,OF_NormalizedSC_PR,OF_NormalizedSC_RE,OF_NormalizedSC_CV] = AC_PR_RE(categoryid,Data(:,col));
@@ -83,6 +87,8 @@ for i = 1:Times
     
     %    除去最后一列类标签,使用相似度求样本间的距离
     Dist = NDM_ForCD(Data(:,[1:col-1]));
+    maxNDM = max(max(Dist))
+    minNDM = min(min(Dist))
     %   采用Normalized谱聚类算法进行聚类，计算正确率
     categoryid = NormalizedSC(Dist,TheoryCluster);
     [NDM_ForCD_NormalizedSC_AC,NDM_ForCD_NormalizedSC_PR,NDM_ForCD_NormalizedSC_RE,NDM_ForCD_NormalizedSC_CV] = AC_PR_RE(categoryid,Data(:,col));
@@ -119,6 +125,8 @@ for alpha = 0.1:0.1:0.9
     for i = 1:Times
         %   除去最后一列类标签,使用新的度量标准求样本间的距离
         Dist = CADOImprove(Data(:,[1:col-1]),alpha);
+        maxCADOImprove = max(max(Dist))
+        minCADOImprove = min(min(Dist))
         %       采用Normalized谱聚类算法进行聚类，计算正确率
         categoryid = NormalizedSC(Dist,TheoryCluster);
         [CADOImprove_NormalizedSC_AC,CADOImprove_NormalizedSC_PR,CADOImprove_NormalizedSC_RE,CADOImprove_NormalizedSC_CV] = AC_PR_RE(categoryid,Data(:,col));
