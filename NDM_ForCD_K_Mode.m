@@ -65,30 +65,32 @@ for k = 1:n
     for i = 1:col
         if Data(Object_i,i) ~= Data(InitialCenters(k),i)
             for j = 1 : col
-                [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Data(Object_i,i)));      %  找出第i列为Data(Xi,i)的元素
-                Temp_i_j = find(Data(i_row,j) == Data(Object_i,j));                           %  找出同时第j列为Data(Xi,j)的元素
-                P_i = size(Temp_i_j,1)/row;
-                P_i_No = (size(Temp_i_j,1) - 1)/(row - 1);
-                
-                [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Data(InitialCenters(k),i)));      %  找出第i列为Data(Xi,i)的元素
-                Temp_i_j = find(Data(i_row,j) == Data(InitialCenters(k),j));                           %  找出同时第j列为Data(Xi,j)的元素
-                P_j = size(Temp_i_j,1)/row;
-                P_j_No = (size(Temp_i_j,1) - 1)/(row - 1);
+                F_i_i = find(Data(:,i) == Data(Object_i,i));
+                F_i_j = find(Data(:,j) == Data(Object_i,j));
+                Temp_i = intersect(F_i_i,F_i_j);
+                P_i = size(Temp_i,1)/row;
+                P_i_No = (size(Temp_i,1) - 1)/(row - 1);
+                F_j_i = find(Data(:,i) == Data(InitialCenters(k),i));
+                F_j_j = find(Data(:,j) == Data(InitialCenters(k),j));
+                Temp_j = intersect(F_j_i,F_j_j);
+                P_j = size(Temp_j,1)/row;
+                P_j_No = (size(Temp_j,1) - 1)/(row - 1);
                 d = d + weight(i,j) * (P_i * P_i_No + P_j * P_j_No);
             end
             wr = pf(i);
         else
             for j = 1 : col
-                [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Data(Object_i,i)));      %  找出第i列为Data(Xi,i)的元素
-                Temp_i_j = find(Data(i_row,j) == Data(Object_i,j));                           %  找出同时第j列为Data(Xi,j)的元素
-                P_i = size(Temp_i_j,1)/row;
-                P_i_No = (size(Temp_i_j,1) - 1)/(row - 1);
-                
-                [i_row,i_col] = ind2sub(size(Data),find(Data(:,i) == Data(InitialCenters(k),i)));      %  找出第i列为Data(Xi,i)的元素
-                Temp_i_j = find(Data(i_row,j) == Data(InitialCenters(k),j));                           %  找出同时第j列为Data(Xi,j)的元素
-                P_j = size(Temp_i_j,1)/row;
-                P_j_No = (size(Temp_i_j,1) - 1)/(row - 1);
-                d = d + weight(i,j) * delta(Data(Object_i,j),Data(InitialCenters(k),j)) * (P_i * P_i_No + P_j * P_j_No);
+                F_i_i = find(Data(:,i) == Data(Object_i,i));
+                F_i_j = find(Data(:,j) == Data(Object_i,j));
+                Temp_i = intersect(F_i_i,F_i_j);
+                P_i = size(Temp_i,1)/row;
+                P_i_No = (size(Temp_i,1) - 1)/(row - 1);
+                F_j_i = find(Data(:,i) == Data(InitialCenters(k),i));
+                F_j_j = find(Data(:,j) == Data(InitialCenters(k),j));
+                Temp_j = intersect(F_j_i,F_j_j);
+                P_j = size(Temp_j,1)/row;
+                P_j_No = (size(Temp_j,1) - 1)/(row - 1);
+                d = d + weight(i,j) * (P_i * P_i_No + P_j * P_j_No);
             end
             wr = ps(i);
         end

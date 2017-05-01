@@ -1,0 +1,6 @@
+CADO SC_Average_AC =       0.6683,        NDM_ForCD SC_Average_AC =   0.0000         OF SC_Average_AC =   0.0000
+CADO KMode_Average_AC =    0.0000,     NDM_ForCD KMode_Average_AC =   0.0000      OF KMode_Average_AC =   0.0000
+CADO SC_Average_NMI =      0.0000,       NDM_ForCD SC_Average_NMI =   0.0000        OF SC_Average_NMI =   0.0000
+CADO KMode_Average_NMI =   0.0000,    NDM_ForCD KMode_Average_NMI =   0.0000     OF KMode_Average_NMI =   0.0000
+CADO SC_Average_ARI =     -0.1095,       NDM_ForCD SC_Average_ARI =   0.0000        OF SC_Average_ARI =   0.0000
+CADO KMode_Average_ARI =   0.0000,    NDM_ForCD KMode_Average_ARI =   0.0000     OF KMode_Average_ARI =   0.0000

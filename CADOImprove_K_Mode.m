@@ -145,9 +145,9 @@ global weight;
 global fid;
 [row,col] = size(Data);
 %   对象Object_i所在的行与列
-[i_row,i_col] = ind2sub(size(Data),find(Data(:,attribute) == Data(Object_i,attribute)));
+[i_row,i_col] = find(Data(:,attribute) == Data(Object_i,attribute));
 %   对象Object_j所在的行与列
-[j_row,i_col] = ind2sub(size(Data),find(Data(:,attribute) == Data(Object_j,attribute)));
+[j_row,i_col] = find(Data(:,attribute) == Data(Object_j,attribute));
 
 InterCoupledSimilarityValue = 0;
 for j = 1:col

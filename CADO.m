@@ -48,9 +48,9 @@ function InterCoupledDissimilarityValue = IeASV(Data,Object_i,Object_j,attribute
 
 [row,col] = size(Data);
 %   对象Object_i所在的行与列
-[i_row,i_col] = ind2sub(size(Data),find(Data(:,attribute) == Data(Object_i,attribute)));
+[i_row,i_col] = find(Data(:,attribute) == Data(Object_i,attribute));
 %   对象Object_j所在的行与列
-[j_row,i_col] = ind2sub(size(Data),find(Data(:,attribute) == Data(Object_j,attribute)));
+[j_row,i_col] = find(Data(:,attribute) == Data(Object_j,attribute));
 
 InterCoupledSimilarityValue = 0;
 for j = 1:col
@@ -69,11 +69,9 @@ for j = 1:col
     InterCoupledSimilarityValue = InterCoupledSimilarityValue + 1/(col-1)*IRSI;     %   相互耦合相似性
 end
 
-InterCoupledDissimilarityValue = 1-InterCoupledSimilarityValue;                     %   相互耦合不相似性
+InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性
 if abs(InterCoupledDissimilarityValue) < 1*10^(-16)
     InterCoupledDissimilarityValue = 0;
 end
 
 end
-
-
