@@ -5,19 +5,21 @@ function main( )
 
 clc;
 global weight;
+global Entropy;
 global ps;
 global pf;
 
-FileName = 'Zoo Data Set';
-TheoryCluster = 7;
+FileName = 'Soybean-small Data Set';
+TheoryCluster = 4;
 
-Data = csvread(strcat(strcat('G:\5、Matlab Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
+Data = csvread(strcat(strcat('E:\Matlab_Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
 Times = 100;                  %   迭代次数
-fid = fopen(strcat('G:\5、Matlab Projects\CADO算法改进 Version3.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
+fid = fopen(strcat('E:\Matlab_Projects\CADO算法改进 Version3.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
 
 [row,col] = size(Data);
 weight = WeightBetweenAttribute(Data(:,[1:col-1]));
 [ps,pf] = WeightInAttribute(Data(:,[1:col-1]));
+Entropy = EntropyCalculate(Data(:,[1:col-1]));
 
 CADO_SC_AC = 0;
 CADO_KMode_AC = 0;

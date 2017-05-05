@@ -1,6 +1,6 @@
 function [ps,pf] = WeightInAttribute(Data)
 
-%   Function:   该函数求出每一列取值相等或者取值不等的概率作为该列的权重
+%   Function:   该函数求出每一列熵作为内耦合权重值
 %   Input:      数据集Data
 %   Output:     权重矩阵
 
