@@ -9,8 +9,8 @@ global Entropy;
 global ps;
 global pf;
 
-FileName = 'Soybean-small Data Set';
-TheoryCluster = 4;
+FileName = 'Hayes-Roth Data Set';
+TheoryCluster = 3;
 
 Data = csvread(strcat(strcat('E:\Matlab_Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
 Times = 100;                  %   迭代次数
