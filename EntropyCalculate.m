@@ -13,7 +13,7 @@ for i = 1:col
         P = size(find(Data(:,i) == Element(k)),1)/row;
         sum = sum + P * log2(P);
     end
-    Entropy(i) = -sum / log2(size(Element,1));
+    Entropy(i) = -sum;
 end
 
 end

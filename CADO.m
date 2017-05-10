@@ -12,9 +12,10 @@ for i = 1:row
     for j = i:row
         CADO = 0;
         for attribute_index = 1:col
-            IaASV = IaASV(Data,i,j,attribute_index);
+%             IaASV = IaASV(Data,i,j,attribute_index);
             IeASV = IeASV(Data,i,j,attribute_index);
-            CASV = IaASV * IeASV;
+%             CASV = IaASV * IeASV;
+            CASV = IeASV;
             CADO = CADO + CASV;
         end
         DistanceMatrix(i,j) = CADO;
@@ -70,8 +71,5 @@ for j = 1:col
 end
 
 InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性
-if abs(InterCoupledDissimilarityValue) < 1*10^(-16)
-    InterCoupledDissimilarityValue = 0;
-end
 
 end

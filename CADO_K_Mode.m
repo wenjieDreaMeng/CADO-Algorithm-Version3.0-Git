@@ -60,9 +60,10 @@ dataset = [];
 for j = 1:n
     CADO = 0;
     for attribute_index = 1:column
-        IaASV = IaASV(Data,Object_i,InitialCenters(j),attribute_index);
+%         IaASV = IaASV(Data,Object_i,InitialCenters(j),attribute_index);
         IeASV = IeASV(Data,Object_i,InitialCenters(j),attribute_index);
-        CASV = IaASV * IeASV;
+%         CASV = IaASV * IeASV;
+        CASV = IeASV;
         CADO = CADO + CASV;
     end
     dataset = cat(1,dataset, [j,CADO]);
@@ -145,8 +146,6 @@ for j = 1:col
     end
 end
 InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性
-if abs(InterCoupledDissimilarityValue) < 1*10^(-16)
-    InterCoupledDissimilarityValue = 0;
-end
+
 
 end
