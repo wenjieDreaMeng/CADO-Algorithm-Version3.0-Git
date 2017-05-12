@@ -1,4 +1,4 @@
-function [ categoryid ] = CADOImprove_K_Mode(Data,K,alpha)
+function [ categoryid ] = CADOImprove_K_Mode(Data,K)
 
 % Author Cfy
 % Date 2008-02-13
@@ -21,7 +21,7 @@ ClusterCenters_i = Data(InitialCenters,[1:d-1]);
 while 1 == 1
     %计算每个数据到聚类中心的距离
     for i = 1:n
-        dist = Distance_of_Categorical(Data(:,[1:d-1]),i,InitialCenters,alpha);% 调用两个对象之间的距离函数
+        dist = Distance_of_Categorical(Data(:,[1:d-1]),i,InitialCenters);% 调用两个对象之间的距离函数
         [m,ind] = min(dist(:,2));                   % 将当前聚类结果存入categoryid中
         categoryid(i) = ind;
     end
@@ -47,7 +47,7 @@ end
 
 end
 
-function [dataset]=Distance_of_Categorical(Data,Object_i,InitialCenters,alpha)
+function [dataset]=Distance_of_Categorical(Data,Object_i,InitialCenters)
 
 % Author Fuyuan Cao
 % Data : 2008-02-13
@@ -63,7 +63,7 @@ for j = 1:n
     for attribute_index = 1:column
         IaASV = IaASV(Data,Object_i,InitialCenters(j),attribute_index);
         IeASV = IeASV(Data,Object_i,InitialCenters(j),attribute_index);
-        CASV = alpha * IaASV + (1 - alpha) * IeASV;
+        CASV = IaASV * IeASV;
         CADO = CADO + CASV;
     end
     dataset = cat(1,dataset, [j,CADO]);
@@ -111,7 +111,7 @@ global Entropy;
 a = size(find(Data(:,attribute) == Data(Object_i,attribute)),1);
 b = size(find(Data(:,attribute) == Data(Object_j,attribute)),1);
 
-IntraCoupledSimilarityValue = a*b/(a+b+a*b);
+IntraCoupledSimilarityValue = (a*b)/(a+b+a*b);
 
 % if Data(Object_i,attribute) ==  Data(Object_j,attribute)
 %     IntraCoupledSimilarityValue = 1;
@@ -119,9 +119,9 @@ IntraCoupledSimilarityValue = a*b/(a+b+a*b);
 %     IntraCoupledSimilarityValue = 1/(1 + log2(row^2/a) * log2(row^2/b));
 % end
 
-weight = Entropy(attribute);
+% weight = Entropy(attribute);
 IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;          %   不相似性
-IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
+% IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 end
 
 
@@ -157,7 +157,7 @@ for j = 1:col
     end
 end
 
-InterCoupledSimilarityValue = InterCoupledSimilarityValue / (col - 1);
+% InterCoupledSimilarityValue = InterCoupledSimilarityValue / (col - 1);
 InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性
 
 end
