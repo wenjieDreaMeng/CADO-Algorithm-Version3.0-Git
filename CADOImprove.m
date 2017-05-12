@@ -82,6 +82,9 @@ for j = 1:col
     end
 end
 
+if InterCoupledSimilarityValue > 1
+    fprintf('InterCoupledSimilarityValue > 1!\n')
+end
 % InterCoupledSimilarityValue = InterCoupledSimilarityValue / (col - 1);
 InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性
 

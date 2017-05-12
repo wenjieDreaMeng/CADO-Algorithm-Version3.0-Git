@@ -43,14 +43,24 @@ end
 
 [row,col] = size(R);
 
+for i = 1:row
+    for j = 1:col
+        if i ~=j
+            R(i,j) = R(i,j) / (col-1);
+        end
+    end
+end
+
 %   对权重矩阵选取所有列间权重的平均值作为阈值
 SumWeight = 0;              %   权重值总和
 for i = 1:row
     for j = 1:col
-        SumWeight = SumWeight + R(i,j);
+        if i ~=j
+            SumWeight = SumWeight + R(i,j);
+        end
     end
 end
-ThresholdValue = SumWeight / (row * row);
+ThresholdValue = SumWeight / (row * row - row);
 
 for i = 1:row
     for j = 1:col
