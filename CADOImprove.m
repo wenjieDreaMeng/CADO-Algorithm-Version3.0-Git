@@ -37,13 +37,13 @@ global Entropy;
 a = size(find(Data(:,attribute) == Data(Object_i,attribute)),1);
 b = size(find(Data(:,attribute) == Data(Object_j,attribute)),1);
 
-IntraCoupledSimilarityValue = (a*b)/(a+b+a*b);
+% IntraCoupledSimilarityValue = (a*b)/(a+b+a*b);
 
-% if Data(Object_i,attribute) ==  Data(Object_j,attribute)
-%     IntraCoupledSimilarityValue = 1;
-% else
-%     IntraCoupledSimilarityValue = 1/(1 + log2(row^2/a) * log2(row^2/b));
-% end
+if Data(Object_i,attribute) ==  Data(Object_j,attribute)
+    IntraCoupledSimilarityValue = 1;
+else
+    IntraCoupledSimilarityValue = 1/(1 + log2(row^2/a) * log2(row^2/b));
+end
 
 % weight = Entropy(attribute);
 IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
@@ -82,11 +82,13 @@ for j = 1:col
     end
 end
 
-if InterCoupledSimilarityValue > 1
-    fprintf('InterCoupledSimilarityValue > 1!\n')
+if InterCoupledSimilarityValue == 0
+    InterCoupledDissimilarityValue = 1;
+else
+    InterCoupledDissimilarityValue = 1/InterCoupledSimilarityValue - 1;
 end
-% InterCoupledSimilarityValue = InterCoupledSimilarityValue / (col - 1);
-InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性
+
+% InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性
 
 end
 

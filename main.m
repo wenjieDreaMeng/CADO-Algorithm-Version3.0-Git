@@ -9,12 +9,12 @@ global Entropy;
 global ps;
 global pf;
 
-FileName = 'Soybean-small Data Set';
-TheoryCluster = 4;
+FileName = 'Hayes-Roth Data Set';
+TheoryCluster = 3;
 
-Data = csvread(strcat(strcat('E:\Matlab_Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
-Times = 10;                  %   迭代次数
-fid = fopen(strcat('E:\Matlab_Projects\CADO算法改进 Version3.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
+Data = csvread(strcat(strcat('G:\5、Matlab Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
+Times = 50;                  %   迭代次数
+fid = fopen(strcat('G:\5、Matlab Projects\CADO算法改进 Version3.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
 
 [row,col] = size(Data);
 weight = WeightBetweenAttribute(Data(:,[1:col-1]));
@@ -43,6 +43,7 @@ NDM_ForCD_SC_ARI = 0;
 NDM_ForCD_KMode_ARI = 0;
 
 for i = 1:Times
+    fprintf('%5d CADO Algorithm Calculate Process......\n',i);
     %    除去最后一列类标签,使用相似度求样本间的距离
     Dist = CADO(Data(:,[1:col-1])); %   采用Normalized谱聚类算法进行聚类，计算正确率
     categoryid = NormalizedSC(Dist,TheoryCluster);
@@ -117,6 +118,7 @@ CADOImprove_KMode_NMI = 0;
 CADOImprove_SC_ARI = 0;
 CADOImprove_KMode_ARI = 0;
 for i = 1:Times
+    fprintf('%5d CADOImprove Algorithm Calculate Process......\n',i);
     %   除去最后一列类标签,使用新的度量标准求样本间的距离
     Dist = CADOImprove(Data(:,[1:col-1]));
     %       采用Normalized谱聚类算法进行聚类，计算正确率
