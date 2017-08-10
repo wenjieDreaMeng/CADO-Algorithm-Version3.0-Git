@@ -62,7 +62,7 @@ for r = 1:col
             P_j_No = (size(Temp_j,1) - 1)/(row - 1);
             d = d + weight(r,l) * (P_i * P_i_No + P_j * P_j_No);
         end
-        wr = pf(r);
+        wr = ps(r);
     else
         for l = 1 : col
             F_i_r = find(Data(:,r) == Data(Xi,r));
@@ -77,7 +77,7 @@ for r = 1:col
             P_j_No = (size(Temp_j,1) - 1)/(row - 1);
             d = d + weight(r,l) * delta(Data(Xi,l),Data(Xj,l)) * (P_i * P_i_No + P_j * P_j_No);
         end
-        wr = ps(r);
+        wr = pf(r);
     end
     w = w + wr;
     dist = dist + wr*d;

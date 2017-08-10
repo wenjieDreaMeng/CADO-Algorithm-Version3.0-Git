@@ -1,4 +1,4 @@
-function [ categoryid ] = CADO_K_Mode(Data,K)
+function [ categoryid ] = WeightAPercentOfMCADO_KMode(Data,K)
 
 % Author Cfy
 % Date 2008-02-13
@@ -54,6 +54,7 @@ function [dataset]=Distance_of_Categorical(Data,Object_i,InitialCenters)
 % Function :
 % 计算两个具有相同的行列的矩阵中，相同行的距离
 
+
 [row,column] = size(Data);
 [a,n] = size(InitialCenters);
 dataset = [];
@@ -103,12 +104,24 @@ function IntraCoupledDissimilarityValue = IaASV(Data,Object_i,Object_j,attribute
 %   输入参数：数据集Data,对象编号Object_i,对象编号Object_j,属性列attribute
 %   输出参数：两个对象Object_i和Object_j在属性列attribute的内耦合系数
 
+global ps;
+global pf;
+
 [row,col] = size(Data);
+
 a = size(find(Data(:,attribute) == Data(Object_i,attribute)),1);
 b = size(find(Data(:,attribute) == Data(Object_j,attribute)),1);
 
 IntraCoupledSimilarityValue = (a*b)/(a+b+a*b);
-IntraCoupledDissimilarityValue = 1/IntraCoupledSimilarityValue -1;     %   不相似性
+
+if Data(Object_i,attribute) ==  Data(Object_j,attribute)
+    weight = ps(attribute) * (a/row) * (b/row);
+else
+    weight = pf(attribute) * (a/row) * (b/row);
+end
+
+IntraCoupledDissimilarityValue = 1 / IntraCoupledSimilarityValue - 1;          %   不相似性
+IntraCoupledDissimilarityValue = IntraCoupledDissimilarityValue * weight;
 
 end
 
@@ -121,7 +134,7 @@ function InterCoupledDissimilarityValue = IeASV(Data,Object_i,Object_j,attribute
 %   输入参数：数据集Data,对象编号Object_i,对象编号Object_j,属性列attribute
 %   输出参数：两个对象Object_i和Object_j在属性列attribute的相互耦合系数
 global weight;
-global fid;
+
 [row,col] = size(Data);
 %   对象Object_i所在的行与列
 [i_row,i_col] = find(Data(:,attribute) == Data(Object_i,attribute));
@@ -141,10 +154,15 @@ for j = 1:col
                 IRSI = IRSI + min(Object_i_ICP,Object_j_ICP);
             end
         end
-        InterCoupledSimilarityValue = InterCoupledSimilarityValue + 1/(col-1)*IRSI;     %   相互耦合相似性
+        InterCoupledSimilarityValue = InterCoupledSimilarityValue + weight(j,attribute)*IRSI;     %   相互耦合相似性
     end
 end
-InterCoupledDissimilarityValue = 1 - InterCoupledSimilarityValue;                     %   相互耦合不相似性
 
+%   相互耦合不相似性
+InterCoupledDissimilarityValue = sum(weight(:,attribute)) - 1 - InterCoupledSimilarityValue;
+
+if abs(InterCoupledDissimilarityValue) < 1 * 10^(-6)
+    InterCoupledDissimilarityValue = 0;
+end
 
 end

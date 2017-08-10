@@ -77,7 +77,7 @@ for k = 1:n
                 P_j_No = (size(Temp_j,1) - 1)/(row - 1);
                 d = d + weight(i,j) * (P_i * P_i_No + P_j * P_j_No);
             end
-            wr = pf(i);
+            wr = ps(i);
         else
             for j = 1 : col
                 F_i_i = find(Data(:,i) == Data(Object_i,i));
@@ -92,7 +92,7 @@ for k = 1:n
                 P_j_No = (size(Temp_j,1) - 1)/(row - 1);
                 d = d + weight(i,j) * (P_i * P_i_No + P_j * P_j_No);
             end
-            wr = ps(i);
+            wr = pf(i);
         end
         w = w + wr;
         Dist = Dist + wr*d;

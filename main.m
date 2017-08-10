@@ -4,144 +4,102 @@ function main( )
 %   Data:   2017-3-3
 
 clc;
+clear;
 global weight;
-global Entropy;
 global ps;
 global pf;
+global fid;
 
-FileName = 'Hayes-Roth Data Set';
-TheoryCluster = 3;
+FileName = 'Mushroom Data Set';
+TheoryCluster = 2;
+
+%   标志位，是否需要进行以下的算法测试，1表示需要测试，0表示不需要测试
+KM_Test = 0;
+SC_Test = 0;
+DP_Test = 1;
 
 Data = csvread(strcat(strcat('G:\5、Matlab Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
-Times = 50;                  %   迭代次数
-fid = fopen(strcat('G:\5、Matlab Projects\CADO算法改进 Version3.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
+Times = 5;                  %   迭代次数
+fid = fopen(strcat('G:\5、Matlab Projects\CADO算法改进 Version5.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
 
 [row,col] = size(Data);
-weight = WeightBetweenAttribute(Data(:,[1:col-1]));
-[ps,pf] = WeightInAttribute(Data(:,[1:col-1]));
-Entropy = EntropyCalculate(Data(:,[1:col-1]));
 
-CADO_SC_AC = 0;
-CADO_KMode_AC = 0;
-CADO_SC_NMI = 0;
-CADO_KMode_NMI = 0;
-CADO_SC_ARI = 0;
-CADO_KMode_ARI = 0;
+SC_AC = 0;
+SC_NMI = 0;
+SC_ARI = 0;
+SC_PR = 0;
+SC_RE = 0;
 
-OF_SC_AC = 0;
-OF_KMode_AC = 0;
-OF_SC_NMI = 0;
-OF_KMode_NMI = 0;
-OF_SC_ARI = 0;
-OF_KMode_ARI = 0;
+KMode_AC = 0;
+KMode_NMI = 0;
+KMode_ARI = 0;
+KMode_PR = 0;
+KMode_RE = 0;
 
-NDM_ForCD_SC_AC = 0;
-NDM_ForCD_KMode_AC = 0;
-NDM_ForCD_SC_NMI = 0;
-NDM_ForCD_KMode_NMI = 0;
-NDM_ForCD_SC_ARI = 0;
-NDM_ForCD_KMode_ARI = 0;
-
-for i = 1:Times
-    fprintf('%5d CADO Algorithm Calculate Process......\n',i);
-    %    除去最后一列类标签,使用相似度求样本间的距离
-    Dist = CADO(Data(:,[1:col-1])); %   采用Normalized谱聚类算法进行聚类，计算正确率
-    categoryid = NormalizedSC(Dist,TheoryCluster);
-    [CADO_NormalizedSC_AC,CADO_NormalizedSC_PR,CADO_NormalizedSC_RE,CADO_NormalizedSC_CV] = AC_PR_RE(categoryid,Data(:,col));
-    CADO_SC_AC = CADO_SC_AC + CADO_NormalizedSC_AC;
-    [CADO_NormalizedSC_NMI] = NMI(categoryid,Data(:,col));
-    CADO_SC_NMI = CADO_SC_NMI + CADO_NormalizedSC_NMI;
-    [CADO_NormalizedSC_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
-    CADO_SC_ARI = CADO_SC_ARI + CADO_NormalizedSC_ARI;
-    
-    %   采用KMode聚类算法进行聚类，计算正确率
-    categoryid = CADO_K_Mode(Data,TheoryCluster);
-    [CADO_K_Mode_AC,CADO_K_Mode_PR,CADO_K_Mode_RE,CADO_K_Mode_CV] = AC_PR_RE(categoryid,Data(:,col));
-    CADO_KMode_AC = CADO_KMode_AC + CADO_K_Mode_AC;
-    [CADO_K_Mode_NMI] = NMI(categoryid,Data(:,col));
-    CADO_KMode_NMI = CADO_KMode_NMI + CADO_K_Mode_NMI;
-    [CADO_K_Mode_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
-    CADO_KMode_ARI = CADO_KMode_ARI + CADO_K_Mode_ARI;
-    
-    %     %    除去最后一列类标签,使用相似度求样本间的距离
-    %     Dist = OF(Data(:,[1:col-1]));
-    %     %   采用Normalized谱聚类算法进行聚类，计算正确率
-    %     categoryid = NormalizedSC(Dist,TheoryCluster);
-    %     [OF_NormalizedSC_AC,OF_NormalizedSC_PR,OF_NormalizedSC_RE,OF_NormalizedSC_CV] = AC_PR_RE(categoryid,Data(:,col));
-    %     OF_SC_AC = OF_SC_AC + OF_NormalizedSC_AC;
-    %     [OF_NormalizedSC_NMI] = NMI(categoryid,Data(:,col));
-    %     OF_SC_NMI = OF_SC_NMI + OF_NormalizedSC_NMI;
-    %     [OF_NormalizedSC_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
-    %     OF_SC_ARI = OF_SC_ARI + OF_NormalizedSC_ARI;
-    %
-    %     %   采用KMode聚类算法进行聚类，计算正确率
-    %     categoryid = OF_K_Mode(Data,TheoryCluster);
-    %     [OF_K_Mode_AC,OF_K_Mode_PR,OF_K_Mode_RE,OF_K_Mode_CV] = AC_PR_RE(categoryid,Data(:,col));
-    %     OF_KMode_AC = OF_KMode_AC + OF_K_Mode_AC;
-    %     [OF_K_Mode_NMI] = NMI(categoryid,Data(:,col));
-    %     OF_KMode_NMI = OF_KMode_NMI + OF_K_Mode_NMI;
-    %     [OF_K_Mode_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
-    %     OF_KMode_ARI = OF_KMode_ARI + OF_K_Mode_ARI;
-    %
-    %     %    除去最后一列类标签,使用相似度求样本间的距离
-    %     Dist = NDM_ForCD(Data(:,[1:col-1]));
-    %     %   采用Normalized谱聚类算法进行聚类，计算正确率
-    %     categoryid = NormalizedSC(Dist,TheoryCluster);
-    %     [NDM_ForCD_NormalizedSC_AC,NDM_ForCD_NormalizedSC_PR,NDM_ForCD_NormalizedSC_RE,NDM_ForCD_NormalizedSC_CV] = AC_PR_RE(categoryid,Data(:,col));
-    %     NDM_ForCD_SC_AC = NDM_ForCD_SC_AC + NDM_ForCD_NormalizedSC_AC;
-    %     [NDM_ForCD_NormalizedSC_NMI] = NMI(categoryid,Data(:,col));
-    %     NDM_ForCD_SC_NMI = NDM_ForCD_SC_NMI + NDM_ForCD_NormalizedSC_NMI;
-    %     [NDM_ForCD_NormalizedSC_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
-    %     NDM_ForCD_SC_ARI = NDM_ForCD_SC_ARI + NDM_ForCD_NormalizedSC_ARI;
-    %
-    %     %   采用KMode聚类算法进行聚类，计算正确率
-    %     categoryid = NDM_ForCD_K_Mode(Data,TheoryCluster);
-    %     [NDM_ForCD_K_Mode_AC,NDM_ForCD_K_Mode_PR,NDM_ForCD_K_Mode_RE,NDM_ForCD_K_Mode_CV] = AC_PR_RE(categoryid,Data(:,col));
-    %     NDM_ForCD_KMode_AC = NDM_ForCD_KMode_AC + NDM_ForCD_K_Mode_AC;
-    %     [NDM_ForCD_K_Mode_NMI] = NMI(categoryid,Data(:,col));
-    %     NDM_ForCD_KMode_NMI = NDM_ForCD_KMode_NMI + NDM_ForCD_K_Mode_NMI;
-    %     [NDM_ForCD_K_Mode_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
-    %     NDM_ForCD_KMode_ARI = NDM_ForCD_KMode_ARI + NDM_ForCD_K_Mode_ARI;
-end
-fprintf(fid,'CADO SC_Average_AC =     %8.4f,        NDM_ForCD SC_Average_AC = %8.4f         OF SC_Average_AC = %8.4f\n',CADO_SC_AC/Times,NDM_ForCD_SC_AC/Times,OF_SC_AC/Times);
-fprintf(fid,'CADO KMode_Average_AC =  %8.4f,     NDM_ForCD KMode_Average_AC = %8.4f      OF KMode_Average_AC = %8.4f\n',CADO_KMode_AC/Times,NDM_ForCD_KMode_AC/Times,OF_KMode_AC/Times);
-fprintf(fid,'CADO SC_Average_NMI =    %8.4f,       NDM_ForCD SC_Average_NMI = %8.4f        OF SC_Average_NMI = %8.4f\n',CADO_SC_NMI/Times,NDM_ForCD_SC_NMI/Times,OF_SC_NMI/Times);
-fprintf(fid,'CADO KMode_Average_NMI = %8.4f,    NDM_ForCD KMode_Average_NMI = %8.4f     OF KMode_Average_NMI = %8.4f\n',CADO_KMode_NMI/Times,NDM_ForCD_KMode_NMI/Times,OF_KMode_NMI/Times);
-fprintf(fid,'CADO SC_Average_ARI =    %8.4f,       NDM_ForCD SC_Average_ARI = %8.4f        OF SC_Average_ARI = %8.4f\n',CADO_SC_ARI/Times,NDM_ForCD_SC_ARI/Times,OF_SC_ARI/Times);
-fprintf(fid,'CADO KMode_Average_ARI = %8.4f,    NDM_ForCD KMode_Average_ARI = %8.4f     OF KMode_Average_ARI = %8.4f\n',CADO_KMode_ARI/Times,NDM_ForCD_KMode_ARI/Times,OF_KMode_ARI/Times);
-fprintf(fid,'\n');
-
-CADOImprove_SC_AC = 0;
-CADOImprove_KMode_AC = 0;
-CADOImprove_SC_NMI = 0;
-CADOImprove_KMode_NMI = 0;
-CADOImprove_SC_ARI = 0;
-CADOImprove_KMode_ARI = 0;
-for i = 1:Times
-    fprintf('%5d CADOImprove Algorithm Calculate Process......\n',i);
+if KM_Test == 1
     %   除去最后一列类标签,使用新的度量标准求样本间的距离
-    Dist = CADOImprove(Data(:,[1:col-1]));
-    %       采用Normalized谱聚类算法进行聚类，计算正确率
-    categoryid = NormalizedSC(Dist,TheoryCluster);
-    [CADOImprove_NormalizedSC_AC,CADOImprove_NormalizedSC_PR,CADOImprove_NormalizedSC_RE,CADOImprove_NormalizedSC_CV] = AC_PR_RE(categoryid,Data(:,col));
-    CADOImprove_SC_AC =  CADOImprove_SC_AC + CADOImprove_NormalizedSC_AC;
-    [CADOImprove_NormalizedSC_NMI] = NMI(categoryid,Data(:,col));
-    CADOImprove_SC_NMI = CADOImprove_SC_NMI + CADOImprove_NormalizedSC_NMI;
-    [CADOImprove_NormalizedSC_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
-    CADOImprove_SC_ARI = CADOImprove_SC_ARI + CADOImprove_NormalizedSC_ARI;
-    
-    %   采用KMode聚类算法进行聚类，计算正确率
-    categoryid = CADOImprove_K_Mode(Data,TheoryCluster);
-    [CADOImprove_K_Mode_AC,CADOImprove_K_Mode_PR,CADOImprove_K_Mode_RE,CADOImprove_K_Mode_CV] = AC_PR_RE(categoryid,Data(:,col));
-    CADOImprove_KMode_AC = CADOImprove_KMode_AC + CADOImprove_K_Mode_AC;
-    [CADOImprove_K_Mode_NMI] = NMI(categoryid,Data(:,col));
-    CADOImprove_KMode_NMI = CADOImprove_KMode_NMI + CADOImprove_K_Mode_NMI;
-    [CADOImprove_K_Mode_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
-    CADOImprove_KMode_ARI = CADOImprove_KMode_ARI + CADOImprove_K_Mode_ARI;
+    fprintf('KMode Algorithm Caculate Process......\n');
+    fprintf(fid,'KMode Algorithm Results:\n');
+    for i = 1:Times
+        fprintf('%2d Times KMode Algorithm Caculate Process......\n',i);
+        %   采用KMode聚类算法进行聚类，计算正确率
+        categoryid = WeightAPercentOfMCADO_KMode(Data,TheoryCluster);
+        [K_Mode_AC,K_Mode_PR,K_Mode_RE,K_Mode_CV] = AC_PR_RE(categoryid,Data(:,col));
+        KMode_AC = KMode_AC + K_Mode_AC;
+        KMode_PR = KMode_PR + K_Mode_PR;
+        KMode_RE = KMode_RE + K_Mode_RE;
+        
+        [K_Mode_NMI] = NMI(categoryid,Data(:,col));
+        KMode_NMI = KMode_NMI + K_Mode_NMI;
+        
+        [K_Mode_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
+        KMode_ARI = KMode_ARI + K_Mode_ARI;
+    end
+    fprintf(fid,'Kmode_Average_AC  = %8.4f	  	Kmode_Average_NMI = %8.4f      Kmode_Average_ARI = %8.4f	  	',KMode_AC/Times,KMode_NMI/Times,KMode_ARI/Times);
+    fprintf(fid,'Kmode_Average_PR = %8.4f       Kmode_Average_RE = %8.4f\n',KMode_PR/Times,KMode_RE/Times);
 end
-fprintf(fid,'CADOImprove SC_AC =  %8.4f,  CADOImprove KMode_AC =  %8.4f\n',CADOImprove_SC_AC/Times,CADOImprove_KMode_AC/Times);
-fprintf(fid,'CADOImprove SC_NMI = %8.4f,  CADOImprove KMode_NMI = %8.4f\n',CADOImprove_SC_NMI/Times,CADOImprove_KMode_NMI/Times);
-fprintf(fid,'CADOImprove SC_ARI = %8.4f,  CADOImprove KMode_ARI = %8.4f\n',CADOImprove_SC_ARI/Times,CADOImprove_KMode_ARI/Times);
+
+
+if SC_Test == 1 || DP_Test == 1
+    fprintf('Dist Matrix Caculate Process......\n');
+    Dist = SMS(Data(:,[1:col-1]));
+    if SC_Test == 1
+        weight = WeightBetweenAttribute(Data(:,[1:col-1]));
+        [ps,pf] = WeightInAttribute(Data(:,[1:col-1]));
+        fprintf(fid,'\nSpectralClustering Algorithm Results:\n');
+        for i = 1:Times
+            fprintf('%2d Times SpectralClustering Algorithm Caculate Process......\n',i);
+            %       采用Normalized谱聚类算法进行聚类，计算正确率
+            categoryid = NormalizedSC(Dist,TheoryCluster);
+            [NormalizedSC_AC,NormalizedSC_PR,NormalizedSC_RE,NormalizedSC_CV] = AC_PR_RE(categoryid,Data(:,col));
+            SC_AC =  SC_AC + NormalizedSC_AC;
+            SC_PR = SC_PR + NormalizedSC_PR;
+            SC_RE = SC_RE + NormalizedSC_RE;
+            
+            [NormalizedSC_NMI] = NMI(categoryid,Data(:,col));
+            SC_NMI = SC_NMI + NormalizedSC_NMI;
+            
+            [NormalizedSC_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
+            SC_ARI = SC_ARI + NormalizedSC_ARI;
+        end
+        fprintf(fid,'SC_Average_AC  = %8.4f		SC_Average_NMI = %8.4f      SC_Average_ARI = %8.4f	  	',SC_AC/Times,SC_NMI/Times,SC_ARI/Times);
+        fprintf(fid,'SC_Average_PR = %8.4f      SC_Average_RE = %8.4f\n',SC_PR/Times,SC_RE/Times);
+    end
+    
+    
+    if DP_Test == 1
+        fprintf(fid,'\nCluster_DP Algorithm Results:\n');
+        fprintf('Cluster_DP Algorithm Caculate Process......\n');
+        %       采用Normalized谱聚类算法进行聚类，计算正确率
+        categoryid = Cluster_DP(Data(:,[1:col-1]),Dist,TheoryCluster);
+        [Cluster_DP_AC,Cluster_DP_PR,Cluster_DP_RE,Cluster_DP_CV] = AC_PR_RE(categoryid,Data(:,col));
+        [Cluster_DP_NMI] = NMI(categoryid,Data(:,col));
+        [Cluster_DP_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
+        fprintf(fid,'DP_Average_AC  = %8.4f		DP_Average_NMI = %8.4f      DP_Average_ARI = %8.4f	  	',Cluster_DP_AC,Cluster_DP_NMI,Cluster_DP_ARI);
+        fprintf(fid,'DP_Average_PR = %8.4f      DP_Average_RE = %8.4f\n',Cluster_DP_PR,Cluster_DP_RE);
+    end
+end
+
 fclose(fid);
 fprintf('Job Has Finished!\n');
 end

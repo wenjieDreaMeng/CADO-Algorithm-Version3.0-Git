@@ -42,7 +42,7 @@ for i = 1:col
 end
 
 [row,col] = size(R);
-
+%   都除以col-1，保证外耦合范围为（0~1）
 for i = 1:row
     for j = 1:col
         if i ~=j
