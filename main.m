@@ -10,7 +10,7 @@ global ps;
 global pf;
 global fid;
 
-FileName = 'Mushroom Data Set';
+FileName = 'Chess Data Set';
 TheoryCluster = 2;
 
 %   标志位，是否需要进行以下的算法测试，1表示需要测试，0表示不需要测试
@@ -18,9 +18,9 @@ KM_Test = 0;
 SC_Test = 0;
 DP_Test = 1;
 
-Data = csvread(strcat(strcat('G:\5、Matlab Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
+Data = csvread(strcat(strcat('D:\科研资料\Matlab Projects\测试数据集\分类型数据集\',FileName),'.csv'));         %   载入总的数据集
 Times = 5;                  %   迭代次数
-fid = fopen(strcat('G:\5、Matlab Projects\CADO算法改进 Version5.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
+fid = fopen(strcat('D:\科研资料\Matlab Projects\CADO算法改进 Version5.0\实验输出数据\',strcat(FileName,'.txt')), 'w');
 
 [row,col] = size(Data);
 

@@ -26,6 +26,5 @@ for i = 1:row
     rho(i) = sum / col;
 end
 
-
 end
 

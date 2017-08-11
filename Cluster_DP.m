@@ -6,7 +6,7 @@ function [cl] = Cluster_DP(Data,dist,ClusterNum)
 
 global fid;
 isShowPicture = 0;          %   是否需要显示聚类图，0表示不显示，1表示显示聚类图
-isChange = 0;               %   是否采用新的密度定义函数
+isChange = 1;               %   是否采用新的密度定义函数
 
 %   将传入的对称的类间矩阵转化为第一列为i,第二列为j，第三列为d（ij）的形式
 xx = [];
@@ -34,6 +34,7 @@ dc = sda(position);                     %   根据占比进行对dc取值
 
 %   选用核函数时，根据样本的记录数进行选择，小于20条记录时，采用高斯核函数，否则采用截断核函数
 if isChange == 0
+    fprintf('Use SMS and original rho calculating......\n');
     for i = 1:ND
         rho(i) = 0.;
     end
@@ -47,9 +48,12 @@ if isChange == 0
             end
         end
     end
+    fprintf('Original rho has calculated!\n');
 else
+    fprintf('Use SMS and CAO rho calculating......\n');
     rho = CAOSampleDensity(Data);
-end 
+    fprintf('CAO rho has calculated!\n');
+end
 
 maxd = max(max(dist));              %   密度最大的点，采用max(dij)作为其该点的delta值
 nneigh = zeros(1,row);
@@ -112,7 +116,7 @@ end
 while ismember(-1,cl) == 1
     for i = 1:ND
         if cl(ordrho(i)) == -1
-            cl(ordrho(i))=cl(nneigh(ordrho(i)));
+            cl(ordrho(i)) = cl(nneigh(ordrho(i)));
         end
     end
 end
@@ -122,7 +126,7 @@ for i = 1:ClusterNum
     nh = 0;
     for j = 1:ND
         %   nc表示第i类聚类结果的样本个数（包括Cluster Core中样本个数和Clister Hole中的样本个数）
-        if (cl(j)==i)
+        if (cl(j) == i)
             nc = nc + 1;
         end
     end
@@ -137,34 +141,27 @@ if isShowPicture == 1
         hold on
         plot(rho(icl(i)),delta(icl(i)),'o','MarkerSize',5,'MarkerFaceColor',cmap(ic,:),'MarkerEdgeColor',cmap(ic,:));
     end
-end
-
-if isShowPicture == 1
-    subplot(2,1,2)
-end
-Y1 = mdscale(dist, 2, 'criterion','metricsstress');
-if isShowPicture == 1
+    subplot(2,1,2);
+    Y1 = mdscale(dist, 2, 'criterion','metricsstress');
     plot(Y1(:,1),Y1(:,2),'o','MarkerSize',4,'MarkerFaceColor','k','MarkerEdgeColor','k');
     title ('2D Nonclassical multidimensional scaling','FontSize',15.0)
-    xlabel ('X')
-    ylabel ('Y')
-end
-
-for i = 1:ND
-    A(i,1) = 0.;
-    A(i,2) = 0.;
-end
-for i = 1:ClusterNum
-    nn = 0;
-    ic = int8((i*64.)/(ClusterNum*1.));
-    for j = 1:ND
+    xlabel ('X');
+    ylabel ('Y');
+    
+    for i = 1:ND
+        A(i,1) = 0.;
+        A(i,2) = 0.;
     end
-    if isShowPicture == 1
-        hold on
-        plot(A(1:nn,1),A(1:nn,2),'o','MarkerSize',2,'MarkerFaceColor',cmap(ic,:),'MarkerEdgeColor',cmap(ic,:));
+    for i = 1:ClusterNum
+        nn = 0;
+        ic = int8((i*64.)/(ClusterNum*1.));
+        for j = 1:ND
+        end
+        if isShowPicture == 1
+            hold on
+            plot(A(1:nn,1),A(1:nn,2),'o','MarkerSize',2,'MarkerFaceColor',cmap(ic,:),'MarkerEdgeColor',cmap(ic,:));
+        end
     end
 end
 
-
 end
-
