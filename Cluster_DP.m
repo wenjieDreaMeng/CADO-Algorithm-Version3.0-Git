@@ -52,7 +52,10 @@ if isChange == 0
 else
     fprintf('Use SMS and CAO rho calculating......\n');
     rho = CAOSampleDensity(Data);
+<<<<<<< HEAD
     fprintf('CAO rho has calculated!\n');
+=======
+>>>>>>> becc9ad7ceb734978f36b23d7f5f2224a314818f
 end
 
 maxd = max(max(dist));              %   密度最大的点，采用max(dij)作为其该点的delta值
@@ -164,4 +167,9 @@ if isShowPicture == 1
     end
 end
 
+<<<<<<< HEAD
 end
+=======
+end
+
+>>>>>>> becc9ad7ceb734978f36b23d7f5f2224a314818f
