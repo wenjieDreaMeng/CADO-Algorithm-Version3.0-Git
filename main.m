@@ -10,13 +10,9 @@ global ps;
 global pf;
 global fid;
 
-<<<<<<< HEAD
-FileName = 'Chess Data Set';
+FileName = 'Mushroom Data Set';
+fprintf(strcat(strcat('Data Set:  ',FileName),'\n'));
 TheoryCluster = 2;
-=======
-FileName = 'Soybean-small Data Set';
-TheoryCluster = 4;
->>>>>>> becc9ad7ceb734978f36b23d7f5f2224a314818f
 
 %   标志位，是否需要进行以下的算法测试，1表示需要测试，0表示不需要测试
 KM_Test = 0;

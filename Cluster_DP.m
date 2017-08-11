@@ -5,7 +5,7 @@ function [cl] = Cluster_DP(Data,dist,ClusterNum)
 %   Author:     wenjie
 
 global fid;
-isShowPicture = 0;          %   是否需要显示聚类图，0表示不显示，1表示显示聚类图
+isShowPicture = 1;          %   是否需要显示聚类图，0表示不显示，1表示显示聚类图
 isChange = 1;               %   是否采用新的密度定义函数
 
 %   将传入的对称的类间矩阵转化为第一列为i,第二列为j，第三列为d（ij）的形式
@@ -22,19 +22,19 @@ NL = max(xx(:,1));
 if NL > ND
     ND = NL;
 end
-N = size(xx,1);                         %   记录的行数
-percent = 2.0;                          %   dc的选择,聚类中的样本占所有总的样本的比例为1%~2%
-position = round( N * percent / 100);   %   round函数为就近取整函数
-sda = sort(xx(:,3));                    %   sort函数进行对距离排序
-if position == 0
-    clc;
-    fprintf('The Variable percent is not legal\n');
-end
-dc = sda(position);                     %   根据占比进行对dc取值
 
 %   选用核函数时，根据样本的记录数进行选择，小于20条记录时，采用高斯核函数，否则采用截断核函数
 if isChange == 0
     fprintf('Use SMS and original rho calculating......\n');
+    N = size(xx,1);                         %   记录的行数
+    percent = 2.0;                          %   dc的选择,聚类中的样本占所有总的样本的比例为1%~2%
+    position = round( N * percent / 100);   %   round函数为就近取整函数
+    sda = sort(xx(:,3));                    %   sort函数进行对距离排序
+    if position == 0
+        clc;
+        fprintf('The Variable percent is not legal\n');
+    end
+    dc = sda(position);                     %   根据占比进行对dc取值
     for i = 1:ND
         rho(i) = 0.;
     end
@@ -52,10 +52,7 @@ if isChange == 0
 else
     fprintf('Use SMS and CAO rho calculating......\n');
     rho = CAOSampleDensity(Data);
-<<<<<<< HEAD
     fprintf('CAO rho has calculated!\n');
-=======
->>>>>>> becc9ad7ceb734978f36b23d7f5f2224a314818f
 end
 
 maxd = max(max(dist));              %   密度最大的点，采用max(dij)作为其该点的delta值
@@ -160,16 +157,9 @@ if isShowPicture == 1
         ic = int8((i*64.)/(ClusterNum*1.));
         for j = 1:ND
         end
-        if isShowPicture == 1
-            hold on
-            plot(A(1:nn,1),A(1:nn,2),'o','MarkerSize',2,'MarkerFaceColor',cmap(ic,:),'MarkerEdgeColor',cmap(ic,:));
-        end
+        hold on
+        plot(A(1:nn,1),A(1:nn,2),'o','MarkerSize',2,'MarkerFaceColor',cmap(ic,:),'MarkerEdgeColor',cmap(ic,:));
     end
 end
 
-<<<<<<< HEAD
 end
-=======
-end
-
->>>>>>> becc9ad7ceb734978f36b23d7f5f2224a314818f
