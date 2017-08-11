@@ -10,8 +10,8 @@ global ps;
 global pf;
 global fid;
 
-FileName = 'Mushroom Data Set';
-TheoryCluster = 2;
+FileName = 'Soybean-small Data Set';
+TheoryCluster = 4;
 
 %   标志位，是否需要进行以下的算法测试，1表示需要测试，0表示不需要测试
 KM_Test = 0;
