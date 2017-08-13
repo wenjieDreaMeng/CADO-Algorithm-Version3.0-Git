@@ -15,8 +15,8 @@ for i = 1:row
                 dist = dist + 1;
             end
         end
-        Dist(i,j) = dist;
-        Dist(j,i) = dist;
+        Dist(i,j) = dist/col;
+        Dist(j,i) = dist/col;
     end
 end
 

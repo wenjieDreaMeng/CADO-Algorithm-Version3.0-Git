@@ -9,39 +9,29 @@ isShowPicture = 1;          %   是否需要显示聚类图，0表示不显示，1表示显示聚类图
 isChange = 1;               %   是否采用新的密度定义函数
 
 %   将传入的对称的类间矩阵转化为第一列为i,第二列为j，第三列为d（ij）的形式
-xx = [];
-[row,col] = size(dist);
-for i = 1:row
-    for j = i+1:col;
-        xx = [xx;[i,j,dist(i,j)]];
-    end
-end
+num = size(dist,1);
+temp = triu(dist);
+xx = temp(find(temp(:) ~=0));
 
-ND = max(xx(:,2));                      %   样本个数
-NL = max(xx(:,1));
-if NL > ND
-    ND = NL;
-end
 
 %   选用核函数时，根据样本的记录数进行选择，小于20条记录时，采用高斯核函数，否则采用截断核函数
 if isChange == 0
     fprintf('Use SMS and original rho calculating......\n');
-    N = size(xx,1);                         %   记录的行数
-    percent = 2.0;                          %   dc的选择,聚类中的样本占所有总的样本的比例为1%~2%
-    position = round( N * percent / 100);   %   round函数为就近取整函数
-    sda = sort(xx(:,3));                    %   sort函数进行对距离排序
+    percent = 2.0;                              %   dc的选择,聚类中的样本占所有总的样本的比例为1%~2%
+    position = round( num * percent / 100);     %   round函数为就近取整函数
+    sda = sort(xx);                             %   sort函数进行对距离排序
     if position == 0
         clc;
         fprintf('The Variable percent is not legal\n');
     end
     dc = sda(position);                     %   根据占比进行对dc取值
-    for i = 1:ND
+    for i = 1:num
         rho(i) = 0.;
     end
     %   截断核函数（当样本数目比较多的时候，采用截断函数）
     %   "Cut off" kernel
-    for i = 1:ND-1
-        for j = i+1:ND
+    for i = 1:num-1
+        for j = i+1:num
             if (dist(i,j) > dc)
                 rho(i) = rho(i) + 1.;
                 rho(j) = rho(j) + 1.;
@@ -56,14 +46,14 @@ else
 end
 
 maxd = max(max(dist));              %   密度最大的点，采用max(dij)作为其该点的delta值
-nneigh = zeros(1,row);
+nneigh = zeros(1,num);
 
 [rho_sorted,ordrho] = sort(rho,'descend');
-delta(ordrho(1)) = -1.;             %   密度最大的点，delta值置为-1
+delta(ordrho(1)) = maxd;             %   密度最大的点，delta值置为-1 b
 nneigh(ordrho(1)) = 0;
 
 %   求出每个数据节点的delta值：即与更高密度点的最小距离
-for i = 2:ND
+for i = 2:num
     delta(ordrho(i)) = maxd;
     for j = 1:i-1
         if(dist(ordrho(i),ordrho(j)) < delta(ordrho(i)))
@@ -80,8 +70,8 @@ if isShowPicture == 1
     figure('Position',[0 0 scrsz(3) scrsz(4)]);
 end
 
-for i=1:ND
-    gamma(i) = rho(i) * delta(i);             %   求出每一个点的rho与delta的乘积,按照从大到小即可得到聚类中心点
+for i=1:num
+    gamma(i) = rho(i) + delta(i);             %   求出每一个点的rho与delta的乘积,按照从大到小即可得到聚类中心点
 end
 
 if isShowPicture == 1
@@ -99,7 +89,7 @@ end
 ClusterCenterInd = ordrho([1:ClusterNum]);
 
 %   cl标注出该样本点为第几个聚类中心点,-1为非聚类中心点
-for i = 1:ND
+for i = 1:num
     if ismember(i,ClusterCenterInd) == 0        %   当i不是ClusterCenterInd中的元素时
         cl(i) = -1;
     else
@@ -114,7 +104,7 @@ end
 
 %   根据传递规则，找到每一个非聚类中心点样本所在的聚类中心
 while ismember(-1,cl) == 1
-    for i = 1:ND
+    for i = 1:num
         if cl(ordrho(i)) == -1
             cl(ordrho(i)) = cl(nneigh(ordrho(i)));
         end
@@ -124,7 +114,7 @@ end
 for i = 1:ClusterNum
     nc = 0;
     nh = 0;
-    for j = 1:ND
+    for j = 1:num
         %   nc表示第i类聚类结果的样本个数（包括Cluster Core中样本个数和Clister Hole中的样本个数）
         if (cl(j) == i)
             nc = nc + 1;
@@ -148,14 +138,19 @@ if isShowPicture == 1
     xlabel ('X');
     ylabel ('Y');
     
-    for i = 1:ND
+    for i = 1:num
         A(i,1) = 0.;
         A(i,2) = 0.;
     end
     for i = 1:ClusterNum
         nn = 0;
         ic = int8((i*64.)/(ClusterNum*1.));
-        for j = 1:ND
+        for j = 1:num
+            if (cl(j) == i)
+                nn = nn+1;
+                A(nn,1) = Y1(j,1);
+                A(nn,2) = Y1(j,2);
+            end
         end
         hold on
         plot(A(1:nn,1),A(1:nn,2),'o','MarkerSize',2,'MarkerFaceColor',cmap(ic,:),'MarkerEdgeColor',cmap(ic,:));

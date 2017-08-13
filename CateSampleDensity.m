@@ -10,8 +10,11 @@ rho = zeros(1,row);
 
 for i = 1:row
     sum = 0;
+    TotalEntropy = 0;
+    
     for j = 1:col
         Element = unique(Data(:,j));
+        TotalEntropy = TotalEntropy + EntropyCalculate(Data,j);
         for k = 1:row
             if i ~= k
                 if Data(i,j) == Data(k,j)
@@ -19,11 +22,11 @@ for i = 1:row
                 else
                     rho_1 = bindwidth / (size(Element,1) - 1);
                 end
-                sum = sum + rho_1;
+                sum = sum + rho_1 * EntropyCalculate(Data,j);
             end
         end
     end
-    rho(i) = sum / col;
+    rho(i) = sum / (col * TotalEntropy);
 end
 
 end

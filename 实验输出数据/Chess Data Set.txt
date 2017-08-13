@@ -1,0 +1,3 @@
+
+Cluster_DP Algorithm Results:
+DP_Average_AC  =   0.5232		DP_Average_NMI =   0.0020      DP_Average_ARI =   0.0002	  	DP_Average_PR =   0.7614      DP_Average_RE =   0.5010

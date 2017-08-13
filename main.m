@@ -10,7 +10,7 @@ global ps;
 global pf;
 global fid;
 
-FileName = 'Mushroom Data Set';
+FileName = 'Congressional Voting Records Data Set';
 fprintf(strcat(strcat('Data Set:  ',FileName),'\n'));
 TheoryCluster = 2;
 
@@ -98,6 +98,9 @@ if SC_Test == 1 || DP_Test == 1
         [Cluster_DP_ARI] = AdjustedRandIndex(categoryid,Data(:,col));
         fprintf(fid,'DP_Average_AC  = %8.4f		DP_Average_NMI = %8.4f      DP_Average_ARI = %8.4f	  	',Cluster_DP_AC,Cluster_DP_NMI,Cluster_DP_ARI);
         fprintf(fid,'DP_Average_PR = %8.4f      DP_Average_RE = %8.4f\n',Cluster_DP_PR,Cluster_DP_RE);
+        
+        fprintf('DP_Average_AC  = %8.4f		DP_Average_NMI = %8.4f      DP_Average_ARI = %8.4f	  	',Cluster_DP_AC,Cluster_DP_NMI,Cluster_DP_ARI);
+        fprintf('DP_Average_PR = %8.4f      DP_Average_RE = %8.4f\n',Cluster_DP_PR,Cluster_DP_RE);
     end
 end
 
